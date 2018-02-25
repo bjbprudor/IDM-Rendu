@@ -1,0 +1,93 @@
+import org.eclipse.emf.common.util.URI
+import java.io.FileWriter
+import org.xtext.example.mydsl.videoGen.MandatoryVideoSeq
+import org.xtext.example.mydsl.videoGen.OptionalVideoSeq
+import org.xtext.example.mydsl.videoGen.AlternativeVideoSeq
+import java.util.Random
+import java.util.List
+import java.util.ArrayList
+
+/**
+ * For JAR usage
+ */
+class MyVideoGen 
+{
+	
+	String dataFolder
+	VideoGenHelper helper
+	VideoGen videoGen
+	
+	new(String dataFolder) { this.dataFolder = dataFolder }
+
+	def String HelloWorld()
+	{
+		return 'Hello World, MyVideoGen a été initialisé sur le folder :' + dataFolder
+	}
+	
+	def String getDataPath()
+	{
+		return dataFolder
+	}
+	
+	def void setDataPath(String dataPath)
+	{
+		dataFolder = dataPath
+	}
+	
+	def List<String> getAllVideoGens()
+	{
+		List<String> vgens = new ArrayList<String>()
+		
+		// search videogen
+		
+	}
+	
+	def void GenVideo()
+	{
+		
+	}
+		
+	def static void GenerateVideo(String vgpath, String outpath, VideoGenHelper helper)
+	{
+		// 
+		val random = new Random()
+		
+		// videogen obtenu via le fichier vgpath
+		val videogen = helper.loadVideoGenerator(URI.createURI(vgpath))
+		
+		// fichier intermediare pour la generation de la video
+		val file = new FileWriter("playlist.txt")	
+		file.write("# playlist to concat videos with ffmpeg\n")
+
+		for (video : videogen.medias) 
+		{
+			if (video instanceof MandatoryVideoSeq) 
+			{
+				file.write("file '" + video.description.location + "'\n")
+			} 
+			else if (video instanceof OptionalVideoSeq) 
+			{
+				val perc = video.description.probability
+				if(perc == 0) 
+				{ 
+					if(random.nextBoolean()) { file.write("file '" + video.description.location + "'\n") }
+				}
+				else 
+				{
+					if(random.nextInt(100) < perc) { file.write("file '" + video.description.location + "'\n") }
+				}
+			}
+			else if (video instanceof AlternativeVideoSeq) 
+			{							
+				file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+			}
+		}
+		file.close()
+		
+		var p = Runtime.runtime.exec("cmd /c start cmd.exe /K \" ffmpeg -f concat -safe 0 -i "+
+		" playlist.txt -c copy " + outpath + ".mp4 && exit\"")
+		p.waitFor
+		
+	}
+		
+}

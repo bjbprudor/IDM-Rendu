@@ -1,0 +1,94 @@
+package fr.m2miage.videogenFE;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
+
+/**
+ * For JAR usage
+ */
+@SuppressWarnings("all")
+public class MyVideoGen {
+  private String dataFolder;
+  
+  private VideoGenHelper helper;
+  
+  private VideoGeneratorModel videoGen;
+  
+  public MyVideoGen(final String dataPath) {
+    VideoGenHelper _videoGenHelper = new VideoGenHelper();
+    this.helper = _videoGenHelper;
+    this.setDataFolder(dataPath);
+  }
+  
+  /**
+   * Methode de test (a supprimer)
+   * @return
+   */
+  public String helloWorld() {
+    return "hello world ! MyVideoGen est operationnel";
+  }
+  
+  /**
+   * Getter dataFolder
+   * @return
+   */
+  public String getDataFolder() {
+    return this.dataFolder;
+  }
+  
+  /**
+   * Setter de dataFolder
+   * @param dataPath
+   */
+  public void setDataFolder(final String dataPath) {
+    this.dataFolder = dataPath;
+    this.setVideoGen("");
+  }
+  
+  /**
+   * Recupere tous les .videoGen situé dans le dossier videogens du dossier data
+   * @return
+   */
+  public List<String> getAllVideoGen() {
+    ArrayList<String> result = new ArrayList<String>();
+    try {
+      File folder = new File((this.dataFolder + "/videogens"));
+      String[] _list = folder.list();
+      for (final String s : _list) {
+        result.add(s);
+      }
+    } catch (final Throwable _t) {
+      if (_t instanceof Exception) {
+        final Exception ex = (Exception)_t;
+        System.out.println(ex.getMessage());
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * change le videogen du generateur
+   * @param videogen le nom du videogen a utiliser
+   * @return true si le changement a reussi, false sinon
+   */
+  public boolean setVideoGen(final String vidGen) {
+    boolean res = false;
+    Object selected = null;
+    try {
+      File folder = new File((this.dataFolder + "/videogens"));
+    } catch (final Throwable _t) {
+      if (_t instanceof Exception) {
+        final Exception ex = (Exception)_t;
+        System.out.println(ex.getMessage());
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
+    }
+    return res;
+  }
+}

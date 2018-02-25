@@ -1,0 +1,17 @@
+
+/**
+ * For JAR usage
+ */
+class MyVideoGenFe
+{
+	
+	/**
+	 * Methode de test (a supprimer)
+	 * @return
+	 */
+	def String helloWorld()
+	{
+		return "hello world ! MyVideoGen est operationnel";
+	}
+	S
+}

@@ -1,0 +1,28 @@
+package fr.m2miage.videogenFE
+
+import org.eclipse.emf.common.util.URI
+import java.io.FileWriter
+import org.xtext.example.mydsl.videoGen.MandatoryVideoSeq
+import org.xtext.example.mydsl.videoGen.OptionalVideoSeq
+import org.xtext.example.mydsl.videoGen.AlternativeVideoSeq
+import java.util.Random
+import java.util.List
+
+/**
+ * For JAR usage
+ */
+class MyVideoGen 
+{
+	
+	String dataFolder;
+	
+	
+		
+	def static String HelloWorld()
+	{
+		var msg = "Hello World" 
+		return msg	
+	}
+
+	
+}

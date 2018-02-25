@@ -1,0 +1,31 @@
+@author "MIAGE 2 students"
+VideoGen {
+	
+	optional videoseq hgd-op "/data/videos/hgd-op.mp4"
+	mandatory videoseq pte-op "/data/videos/pte-op.mp4"
+	alternative pte-gag1
+	{
+		videoseq pte-g1 "/data/videos/pte-g1.mp4"
+		videoseq pte-g2 "/data/videos/pte-g2.mp4"
+		videoseq pte-g3 "/data/videos/pte-g3.mp4"
+	}
+	alternative pte-gag2
+	{
+		videoseq pte-g1 "/data/videos/pte-g4.mp4"
+		videoseq pte-g2 "/data/videos/pte-g5.mp4"
+	}
+	alternative pte-gag3
+	{
+		videoseq pte-g1 "/data/videos/pte-g1.mp4"
+		videoseq pte-g2 "/data/videos/pte-g2.mp4"
+		videoseq pte-g3 "/data/videos/pte-g3.mp4"
+		videoseq pte-g4 "/data/videos/pte-g4.mp4""
+	}
+	mandatory videoseq pte-end "pte-end.mp4"
+	alternative hgd-end
+	{
+		videoseq pte-g1 "/data/videos/hgd-e1.mp4"
+		videoseq pte-g2 "/data/videos/hdg-e2.mp4"
+		videoseq pte-g3 "/data/videos/hgd-e3.mp4"
+	}
+}

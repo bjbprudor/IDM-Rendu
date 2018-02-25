@@ -1,0 +1,241 @@
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.eclipse.emf.common.util.URI;
+import org.xtext.example.mydsl.videoGen.Media;
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel;
+import org.xtext.example.mydsl.videoGen.VideoSeq;
+
+public class MyJavaVideoGen 
+{
+		
+	private String dataFolder;
+	private VideoGenHelper helper;
+	VideoGeneratorModel videoGen;
+	
+	public MyJavaVideoGen(String dataPath)
+	{
+		helper = new VideoGenHelper();
+		setDataFolder(dataPath);
+	}
+	
+	/**
+	 * Methode de test (a supprimer)
+	 * @return
+	 */
+	public String helloWorld()
+	{
+		return "hello world ! MyJavaVideoGen est operationnel";
+	}
+	
+	/**
+	 * Getter dataFolder
+	 * @return
+	 */
+	public String getDataFolder()
+	{
+		return dataFolder;
+	}
+	
+	/**
+	 * Setter de dataFolder
+	 * @param dataPath
+	 */
+	public void setDataFolder(String dataPath)
+	{
+		dataFolder = dataPath;
+		setVideoGen("");
+	}
+	
+	/**
+	 * Recupere tous les .videoGen situé dans le dossier videogens du dossier data
+	 * @return
+	 */
+	public List<String> getAllVideoGen()
+	{
+		List<String> result = new ArrayList<>();
+		try
+		{
+			// on recupere tous les fichier situe dans le dossier des videogens
+			File folder = new File(dataFolder+"/videogens");
+			for(String s : folder.list())
+			{
+				result.add(s);
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * change le videogen du generateur
+	 * @param videogen le nom du videogen a utiliser
+	 * @return true si le changement a reussi, false sinon
+	 */
+	public boolean setVideoGen(String vidGen)
+	{
+		boolean res = false;
+		File selected = null;
+		try
+		{
+			File folder = new File(dataFolder+"/videogens"); // recupere les videogens existant
+			File[] files = folder.listFiles();
+			if(files.length == 0) { throw new Exception("Aucun Fichier n'a été trouvé"); }
+			if(vidGen == "") { selected = files[0]; } // si le parametre est null on selectionne le premier videogen
+			else {
+				for(File f : files) // on compare le parametre au videogen existants
+				{
+					if(vidGen == f.getName()) { selected = f; res = true; break; }
+				}
+				if(selected == null) { selected = files[0]; } // si aucun videogen est trouvé on selectionne le videogen par defaut
+			}
+			videoGen = helper.loadVideoGenerator(URI.createURI(selected.getPath())); // on recupere le videogeneratormodel via correspondant
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}		
+		return res;
+	}
+	
+	public void GenVideo()
+	{
+		try
+		{
+			Random r = new Random();
+		/*
+		 val random = new Random()
+			
+			// videogen obtenu via le fichier vgpath
+			val videogen = helper.loadVideoGenerator(URI.createURI(vgpath))
+			
+			// fichier intermediare pour la generation de la video
+			val file = new FileWriter("playlist.txt")	
+			file.write("# playlist to concat videos with ffmpeg\n")
+
+			for (video : videogen.medias) 
+			{
+				if (video instanceof MandatoryVideoSeq) 
+				{
+					file.write("file '" + video.description.location + "'\n")
+				} 
+				else if (video instanceof OptionalVideoSeq) 
+				{
+					val perc = video.description.probability
+					if(perc == 0) 
+					{ 
+						if(random.nextBoolean()) { file.write("file '" + video.description.location + "'\n") }
+					}
+					else 
+					{
+						if(random.nextInt(100) < perc) { file.write("file '" + video.description.location + "'\n") }
+					}
+				}
+				else if (video instanceof AlternativeVideoSeq) 
+				{							
+					file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+				}
+			}
+			file.close()
+			
+			var p = Runtime.runtime.exec("cmd /c start cmd.exe /K \" ffmpeg -f concat -safe 0 -i "+
+			" playlist.txt -c copy " + outpath + ".mp4 && exit\"")
+			p.waitFor	
+		 */
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}		
+	}
+
+	
+	public List<Media> GetAllVideos()
+	{
+		List<Media> videos = new ArrayList<>();
+		try
+		{
+			for(Media media : videoGen.getMedias())
+			{
+				if(media instanceof VideoSeq) 
+				{
+					// verifier thumbnail et autre
+					videos.add(media);
+				}
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}	
+		return videos;
+	}
+	
+	public void ConfigureVideo(List<String> ids)
+	{
+		try
+		{
+			Random r = new Random();
+			
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}	
+	}
+	
+}
+	/*
+		
+			
+		def static void GenerateVideo(String vgpath, String outpath, VideoGenHelper helper)
+		{
+			
+			val videogen = helper.loadVideoGenerator(URI.createURI(vgpath))
+			
+			// fichier intermediare pour la generation de la video
+			val file = new FileWriter("playlist.txt")	
+			file.write("# playlist to concat videos with ffmpeg\n")
+
+			for (video : videogen.medias) 
+			{
+				if (video instanceof MandatoryVideoSeq) 
+				{
+					file.write("file '" + video.description.location + "'\n")
+				} 
+				else if (video instanceof OptionalVideoSeq) 
+				{
+					val perc = video.description.probability
+					if(perc == 0) 
+					{ 
+						if(random.nextBoolean()) { file.write("file '" + video.description.location + "'\n") }
+					}
+					else 
+					{
+						if(random.nextInt(100) < perc) { file.write("file '" + video.description.location + "'\n") }
+					}
+				}
+				else if (video instanceof AlternativeVideoSeq) 
+				{							
+					file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+				}
+			}
+			file.close()
+			
+			var p = Runtime.runtime.exec("cmd /c start cmd.exe /K \" ffmpeg -f concat -safe 0 -i "+
+			" playlist.txt -c copy " + outpath + ".mp4 && exit\"")
+			p.waitFor
+			
+		}
+			
+	
+
+
+}
+*/

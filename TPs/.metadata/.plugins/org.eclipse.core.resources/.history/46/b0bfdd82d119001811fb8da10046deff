@@ -1,0 +1,140 @@
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MyJavaVideoGen 
+{
+		
+	private String dataFolder;
+	private VideoGenHelper helper;
+	//VideoGen videoGen;
+	Object videoGen;
+	
+	public MyJavaVideoGen(String dataPath)
+	{
+		helper = new VideoGenHelper();
+		setDataFolder(dataPath);
+	}
+	
+	public String getDataFolder()
+	{
+		return dataFolder;
+	}
+	
+	public void setDataFolder(String dataPath)
+	{
+		dataFolder = dataPath;
+		SelectVideoGen("");
+	}
+	
+	public List<String> getAllVideoGen()
+	{
+		List<String> result = new ArrayList<>();
+		
+		try
+		{
+			File folder = new File(dataFolder+"/videogens");
+			for(String s : folder.list())
+			{
+				result.add(s);
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	public void SelectVideoGen(String genName)
+	{
+		if(genName == "")
+		{
+			
+		}
+	}
+	
+}
+	/*
+		VideoGenHelper helper
+		VideoGen videoGen
+		
+		new(String dataFolder) { this.dataFolder = dataFolder }
+
+		def String HelloWorld()
+		{
+			return 'Hello World, MyVideoGen a été initialisé sur le folder :' + dataFolder
+		}
+		
+		def String getDataPath()
+		{
+			return dataFolder
+		}
+		
+		def void setDataPath(String dataPath)
+		{
+			dataFolder = dataPath
+		}
+		
+		def List<String> getAllVideoGens()
+		{
+			List<String> vgens = new ArrayList<String>()
+			
+			// search videogen
+			
+		}
+		
+		def void GenVideo()
+		{
+			
+		}
+			
+		def static void GenerateVideo(String vgpath, String outpath, VideoGenHelper helper)
+		{
+			// 
+			val random = new Random()
+			
+			// videogen obtenu via le fichier vgpath
+			val videogen = helper.loadVideoGenerator(URI.createURI(vgpath))
+			
+			// fichier intermediare pour la generation de la video
+			val file = new FileWriter("playlist.txt")	
+			file.write("# playlist to concat videos with ffmpeg\n")
+
+			for (video : videogen.medias) 
+			{
+				if (video instanceof MandatoryVideoSeq) 
+				{
+					file.write("file '" + video.description.location + "'\n")
+				} 
+				else if (video instanceof OptionalVideoSeq) 
+				{
+					val perc = video.description.probability
+					if(perc == 0) 
+					{ 
+						if(random.nextBoolean()) { file.write("file '" + video.description.location + "'\n") }
+					}
+					else 
+					{
+						if(random.nextInt(100) < perc) { file.write("file '" + video.description.location + "'\n") }
+					}
+				}
+				else if (video instanceof AlternativeVideoSeq) 
+				{							
+					file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+				}
+			}
+			file.close()
+			
+			var p = Runtime.runtime.exec("cmd /c start cmd.exe /K \" ffmpeg -f concat -safe 0 -i "+
+			" playlist.txt -c copy " + outpath + ".mp4 && exit\"")
+			p.waitFor
+			
+		}
+			
+	
+
+
+}
+*/

@@ -1,0 +1,32 @@
+
+
+import org.eclipse.emf.common.util.URI
+
+/**
+ * For JAR usage
+ */
+class MyVideoGenFe
+{
+	
+	VideoGenHelper helper;
+	
+	new()
+	{
+		helper = new VideoGenHelper()
+	}
+	
+	/**
+	 * Methode de test (a supprimer)
+	 * @return
+	 */
+	def String helloWorld()
+	{
+		return "hello world ! MyVideoGen est operationnel";
+	}
+	
+	def void LoadWorld(String s)
+	{
+		helper.loadVideoGenerator(URI.createURI(s));
+	}
+	
+}

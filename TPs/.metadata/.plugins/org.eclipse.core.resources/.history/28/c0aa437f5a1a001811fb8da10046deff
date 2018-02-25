@@ -1,0 +1,23 @@
+import org.eclipse.emf.common.util.URI
+import java.io.File
+import java.util.ArrayList
+import java.util.List
+import VideoGenHelper
+import org.xtext.example.mydsl.videoGen.VideoGeneratorModel
+
+/**
+ * For JAR usage
+ */
+class MyVideoGenFe
+{
+	
+	/**
+	 * Methode de test (a supprimer)
+	 * @return
+	 */
+	def String helloWorld()
+	{
+		return "hello world ! MyVideoGen est operationnel";
+	}
+	S
+}
