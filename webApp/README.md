@@ -1,2 +1,1 @@
-# Rendu IDM M2MIAGE
-Quang Le et Bastien Prudor
+# Installation de l'application web VideoGen
