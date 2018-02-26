@@ -192,7 +192,8 @@ class VideoGenTp3 {
 	}
 	
 	/**
-	 * For Q4 : logiquement la taille du gif dépend de la durée définie, donc osef de la comparasion des tailles
+	 * For Q4 : logiquement la taille du gif dépend de la durée définie, donc pour la comparaison des tailles ce sera presque les mêmes 
+	 * valeurs comme pour la comparaison des tailles des vidéos
 	 */
 	def static long gifSize(int start, int duration, int size, File video, String outputFolder) {
 		// même code que q3
