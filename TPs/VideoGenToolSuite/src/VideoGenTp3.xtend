@@ -28,11 +28,20 @@ class VideoGenTp3 {
 	 * Q1
 	 */
 	def static void generateCsv(VideoGenHelper videoGen) {
-		
 		var String content = "";
 		var videogen = videoGen.loadVideoGenerator(URI.createURI("example1.videogen"))
 		var listVariantVid = new LinkedList<LinkedList<VideoDescription>>
 		
+		// add size for each video object of listVariant
+		for (listVariantVideos : listVariantVideos(videogen)) {
+			
+			var temp = new LinkedList<VideoDescription>
+			for (var int i = 0; i < listVariantVideos.size(); i++) {
+				var VideoDescription currentVideo = listVariantVideos.get(i)
+				temp.add(currentVideo)
+			}
+			listVariantVid.add(temp)
+		}
 		content += "id;"
 		val videos = videogen.medias
 		var List<String> nameColumns = new LinkedList<String>()
@@ -56,15 +65,15 @@ class VideoGenTp3 {
 		
 		// complete true/false and size in csv
 		
-		var int ii = 1
+		var int ii = 1 
 		for (listVariantVideos : listVariantVid) {
 			var int size = 0;
 			content += (ii) + ";"
 			var List<String> listName = new ArrayList<String>()
 			for (var int i = 0; i < listVariantVideos.size(); i++) {
-				var desc = listVariantVideos.get(i)
-				val File currentFile = new File(desc.location)
-				size += currentFile.length() as int
+				val File currentFile = new File(listVariantVideos.get(i).location)
+				val currentFileSize = currentFile.length() as int
+				size += currentFileSize
 				listName.add(listVariantVideos.get(i).videoid)
 			}
 			
@@ -151,13 +160,13 @@ class VideoGenTp3 {
 		var BufferedReader br = new BufferedReader(new FileReader("videos-size.csv"))
         var String line = br.readLine();
         content += line
-        content += ",realSize\n"
+        content += ";realSize\n"
         var int i = 1;
 		while ((line = br.readLine()) !== null) {
 	        val File videoVariante = new File("variantesVideo/variante" + i + ".mp4")
 	        i++
 			content += line
-			content += "," + videoVariante.length() + "\n"
+			content += ";" + videoVariante.length() + "\n"
 		}
 		
 		val file = new FileWriter("videos-realSize.csv")
