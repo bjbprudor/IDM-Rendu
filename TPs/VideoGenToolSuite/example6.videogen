@@ -1,0 +1,11 @@
+@author "MIAGE 2 students"
+VideoGen {
+	
+	mandatory videoseq v1 "v1.mp4" { probabilty 19 filter negate text {text hello }}
+	optional videoseq v2 "v2.mp4"
+	alternatives v3 {
+		videoseq v31 "v31.mp4"
+		videoseq v32 "v32.mp4"
+	}
+	mandatory videoseq v4 "v4.mp4"
+}

@@ -1,0 +1,5 @@
+# playlist to concat videos with ffmpeg
+file 'v1.mp4'
+file 'v2.mp4'
+file 'v32.mp4'
+file 'v4.mp4'

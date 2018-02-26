@@ -1,0 +1,4 @@
+@author "MIAGE 2 students"
+VideoGen {
+	optional videoseq v2 "v2.mp4"
+}

@@ -1,0 +1,8 @@
+@author "MIAGE 2 students"
+VideoGen {
+	alternatives v3 {
+		videoseq v31 "v31.mp4"
+		videoseq v32 "v32.mp4"
+		videoseq v33 "v33.mp4"
+	}
+}
