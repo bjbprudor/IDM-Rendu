@@ -15,15 +15,14 @@ import java.io.FileWriter
 import java.util.Random
 
 /**
- * TP3
+ * TP4
  */
 class VideoGenTp4 {
 	
 	def static void main(String[] args) {
-		//ygenerateCsv(new VideoGenHelper)
-		//generateCsvWithRealSize()
-		//gification(3, 5, 500, new File("variantesVideo/variante1.mp4"), "gif/")
-		addText(new VideoGenHelper, "ANIME POWER")
+		//addText(new VideoGenHelper, "ANIME POWER", 20 ,18)
+		//addFilterWhiteBlack(new VideoGenHelper, 18)
+		addFilterNegate(new VideoGenHelper,18)
 	}
 
 	
@@ -195,8 +194,11 @@ class VideoGenTp4 {
 	
 	/**
 	 * Q7
+	 * La méthode ajoute le filtre sur toute la playlist vidéo et ce n'est pas le but
+	 * Il faut plutôt appliquer 1 filtre sur une vidéo si c'est écrit dans la specification example.videogen
+	 * Mais pas le temps de chercher comment d'abord déclarer un filtre dans le fichier videogen
 	 */
-	 def static void addText(VideoGenHelper videoGen, String text) {
+	 def static void addText(VideoGenHelper videoGen, String text, int size, int quality) {
 	 	val file = new FileWriter("playlistFfmpeg.txt")
 		val videogen = videoGen.loadVideoGenerator(URI.createURI("example1.videogen"))
 		val random = new Random()
@@ -216,16 +218,13 @@ class VideoGenTp4 {
 		
 		var p = Runtime.runtime.exec("cmd /c start cmd.exe "
 				+ "/K \"ffmpeg -f concat -safe 0 -i playlistFfmpeg.txt "
-				+ "-vf drawtext=\"fontsize=30:fontfile=C\\:\\Windows\\Fonts\\FreeSerif.ttf:text='" + text + "':x=(w-text_w)/2:y=(h-text_h)/2\" " 
-				+ "-crf 16 output_concat_with_text.mp4"
+				+ "-vf drawtext=\"fontsize=" + size + ":fontfile=fonts/arial.ttf:fontcolor=white:text='" + text + "':x=(w-text_w)/2:y=(h-text_h)/2\" " 
+				+ "-crf "+ quality + " output_concat_with_text.mp4"
  				+ "&& exit\"")
- 				println("ffmpeg -f concat -safe 0 -i playlistFfmpeg.txt "
-				+ "-vf drawtext=\"fontsize=30:fontfile=C\\:\\Windows\\Fonts\\FreeSerif.ttf:text='" + text + "':x=(w-text_w)/2:y=(h-text_h)/2\" " 
-				+ "-crf 16 output_concat_with_text.mp4")
 		p.waitFor
 	 }
-
-	/*
+	 
+	 /*
 	 * Q5 : 
 	 * Q6 : 
 	 */
@@ -233,5 +232,62 @@ class VideoGenTp4 {
 	 {
 	 	
 	 }
-
+	 
+	 /**
+	 * Q7
+	 */
+	 def static void addFilterWhiteBlack(VideoGenHelper videoGen, int quality) {
+	 	val file = new FileWriter("playlistFfmpeg.txt")
+		val videogen = videoGen.loadVideoGenerator(URI.createURI("example1.videogen"))
+		val random = new Random()
+		file.write("# playlist to concat videos with ffmpeg\n")
+		videogen.medias.forEach[video |
+			if (video instanceof MandatoryVideoSeq) {
+				file.write("file '" + video.description.location + "'\n")
+			} else if (video instanceof OptionalVideoSeq) {
+				if (random.nextBoolean()){
+					file.write("file '" + video.description.location + "'\n")
+				}
+			} else if (video instanceof AlternativeVideoSeq) {
+				file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+			}
+		]
+		file.close()
+		
+		var p = Runtime.runtime.exec("cmd /c start cmd.exe "
+				+ "/K \"ffmpeg -f concat -safe 0 -i playlistFfmpeg.txt "
+				+ "-vf hue=s=0 "
+				+ "-crf "+ quality + " output_concat_with_filter_white_black.mp4"
+ 				+ "&& exit\"")
+		p.waitFor
+	 }
+	 
+	  /**
+	 * Q7
+	 */
+	 def static void addFilterNegate(VideoGenHelper videoGen, int quality) {
+	 	val file = new FileWriter("playlistFfmpeg.txt")
+		val videogen = videoGen.loadVideoGenerator(URI.createURI("example1.videogen"))
+		val random = new Random()
+		file.write("# playlist to concat videos with ffmpeg\n")
+		videogen.medias.forEach[video |
+			if (video instanceof MandatoryVideoSeq) {
+				file.write("file '" + video.description.location + "'\n")
+			} else if (video instanceof OptionalVideoSeq) {
+				if (random.nextBoolean()){
+					file.write("file '" + video.description.location + "'\n")
+				}
+			} else if (video instanceof AlternativeVideoSeq) {
+				file.write("file '" + video.videodescs.get(random.nextInt(video.videodescs.size)).location + "'\n")
+			}
+		]
+		file.close()
+		
+		var p = Runtime.runtime.exec("cmd /c start cmd.exe "
+				+ "/K \"ffmpeg -f concat -safe 0 -i playlistFfmpeg.txt "
+				+ "-vf lutrgb=\"r=maxval+minval-val:g=maxval+minval-val:b=maxval+minval-val\" "
+				+ "-crf "+ quality + " output_concat_with_filter_negate.mp4"
+ 				+ "&& exit\"")
+		p.waitFor
+	 }
 }
