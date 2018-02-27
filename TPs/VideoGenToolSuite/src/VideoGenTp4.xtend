@@ -225,12 +225,45 @@ class VideoGenTp4 {
 	 }
 	 
 	 /*
-	 * Q5 : 
+	 * Q5 : Des test peuvent echoué si les probabilités sont incorrect car le tirage sera soit faussé soit certains resultat ne tomberons pas
+	 * si les fichier n'existe pas les traitements ne pourront être effectué et si les id ne sont pas unique les fichier trouvés peuvent ne pas etre correct
 	 * Q6 : 
 	 */
-	 def void verifierErreurs()
+	 def static void verifierErreurs(VideoGenHelper videoGen)
 	 {
-	 	
+		val videogen = videoGen.loadVideoGenerator(URI.createURI("example1.videogen"))
+		var listId = new HashSet()
+		for(video : videogen.medias)
+		{
+			if (video instanceof MandatoryVideoSeq) 
+			{
+				val test = Files.exists(Paths.get(video.description.location))
+				if(!test) { println("Le fichier n'hesite pas")}
+				val id = listId.add(video.description.videoid)
+				if(!id) {println("l'id " + video.description.videoid + " existe deja") }
+			} 
+			else if (video instanceof OptionalVideoSeq) 
+			{
+				val test = Files.exists(Paths.get(video.description.location))
+				if(!test) { println("Le fichier n'hesite pas")}
+				if(video.description.probability > 100) { println("la probabilité d'apparition ne peut exceder 100%") } 
+				val id = listId.add(video.description.videoid)
+				if(!id) {println("l'id " + video.description.videoid + " existe deja") }
+			}
+			 else if (video instanceof AlternativeVideoSeq) 
+			 {
+			 	var sum = 0
+			 	for(desc : video.videodescs)
+			 	{
+			 		val test = Files.exists(Paths.get(desc.location))
+					if(!test) { println("Le fichier n'hesite pas")}
+					sum = sum + desc.probability
+					val id = listId.add(desc.videoid)
+					if(!id) {println("l'id " + desc.videoid + " existe deja") }
+			 	}
+			 	if(sum > 100) { println("la somme des probabilité excede 100%") }
+			 }
+		}
 	 }
 	 
 	 /**
